@@ -1,36 +1,69 @@
+<!-- src/App.vue -->
 <template>
-  <div>
-    <div class="draggable" v-draggable>拖动我
-  </div>
+  <div id="app" @contextmenu.prevent="showContextMenu" @click="hideContextMenu">
+    <div
+      class="context-menu"
+      :style="{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }"
+      v-show="menuVisible"
+    >
+      <div @click="option1">选项 1</div>
+      <div @click="option2">选项 2</div>
+      <div @click="option3">选项 3</div>
+    </div>
   </div>
 </template>
 
 <script>
-import draggable from './directives/draggable';
-
 export default {
-  directives: {
-    draggable,
+  data() {
+    return {
+      menuVisible: false,
+      menuPosition: { x: 0, y: 0 },
+    };
+  },
+  methods: {
+    showContextMenu(event) {
+      this.menuPosition.x = event.clientX;
+      this.menuPosition.y = event.clientY;
+      this.menuVisible = true;
+    },
+    hideContextMenu() {
+      this.menuVisible = false;
+    },
+    option1() {
+      console.log("执行选项 1 的功能");
+      this.hideContextMenu();
+    },
+    option2() {
+      console.log("执行选项 2 的功能");
+      this.hideContextMenu();
+    },
+    option3() {
+      console.log("执行选项 3 的功能");
+      this.hideContextMenu();
+    },
   },
 };
 </script>
 
 <style>
-body {
-  /* 设置背景图片 URL */
-  background-image: url('https://pan.hiiro.fun/d/UPAI/link/background.jpg?sign=fRbfjoUi76S9qyWYMO0WUk3OSsdZhSM4sfspyKUP-f8=:0');
-  /* 填充整个屏幕 */
-  background-size: cover;
-  /* 不重复 */
+#app {
+  background-image: url("./assets/background.jpg");
+  background-position: center center;
   background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
 }
 
-.draggable {
-  background-color: rgba(173, 255, 157, 0.8);
-  border-radius: 5px;
-  padding: 20px;
-  position: absolute;
-  left: 50px;
-  top: 50px;
-} 
+.context-menu {
+  position: fixed;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.8); /* 设置半透明背景 */
+  backdrop-filter: blur(5px); /* 模糊背景 */
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  border-radius: 8px; /* 添加圆角 */
+}
 </style>

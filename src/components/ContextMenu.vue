@@ -1,43 +1,36 @@
+<!-- src/components/ContextMenu.vue -->
+<!-- ... -->
 <template>
+  <div class="container" @contextmenu.prevent="showContextMenu">
+    <div class="content">
+      <slot></slot>
+    </div>
     <div
       class="context-menu"
-      :style="{ top: position.y + 'px', left: position.x + 'px' }"
-      @contextmenu.prevent
+      :style="{ top: `${menuPosition.y}px`, left: `${menuPosition.x}px` }"
+      v-show="menuVisible"
     >
-      <div
-        class="context-menu-item"
-        v-for="option in options"
-        :key="option.event"
-        @click="$emit(option.event, position)"
-      >
-        {{ option.label }}
-      </div>
+      <div @click="onAddDrone">添加无人机</div>
+      <div @click="onAddBaseStation">添加基站</div>
     </div>
-  </template>
-  
-  <script>
-  import { ref } from "vue";
-  
-  export default {
-    props: {
-      options: {
-        type: Array,
-        required: true,
-      },
+  </div>
+</template>
+<!-- ... -->
+<script>
+export default {
+  // ...
+  methods: {
+    // ...
+    onAddDrone() {
+      this.$emit("add-drone");
+      this.hideContextMenu();
     },
-    setup() {
-      const position = ref({ x: 0, y: 0 });
-  
-      const handleContextMenu = (event) => {
-        event.preventDefault();
-        position.value = { x: event.clientX, y: event.clientY };
-      };
-  
-      window.addEventListener("contextmenu", handleContextMenu);
-  
-      return {
-        position,
-      };
+    onAddBaseStation() {
+      this.$emit("add-base-station");
+      this.hideContextMenu();
     },
-  };
-  </script>
+  },
+  // ...
+};
+</script>
+<!-- ... -->

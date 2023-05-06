@@ -1,4 +1,8 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+// src/main.js
+import { createApp } from "vue";
+import App from "./App.vue";
+// import contextmenu from "./directives/contextmenu";
 
-createApp(App).mount('#app')
+const app = createApp(App);
+// app.directive("contextmenu", contextmenu);
+app.mount("#app");
